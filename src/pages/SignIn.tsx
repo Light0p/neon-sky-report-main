@@ -28,18 +28,14 @@ const SignIn = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    console.log("SignIn handleSubmit called");
-
     try {
       await login(email, password);
-      console.log("Login successful");
       toast({
         title: 'Welcome back!',
         description: 'You have been signed in successfully.',
       });
       navigate(from, { replace: true });
     } catch (error: any) {
-      console.error("SignIn error:", error);
       toast({
         title: 'Sign In Failed',
         description: error.message,
@@ -52,7 +48,6 @@ const SignIn = () => {
 
   const handleGoogleSignIn = (response: any) => {
     setLoading(true);
-    console.log("Google SignIn callback", response);
     loginWithGoogle(response.credential)
       .then(() => {
         toast({
@@ -100,8 +95,8 @@ const SignIn = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-primary flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-primary flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-full sm:max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
