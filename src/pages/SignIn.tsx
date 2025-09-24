@@ -95,8 +95,8 @@ const SignIn = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-primary flex items-center justify-center px-4 py-8 w-full overflow-x-hidden">
-      <div className="w-full max-w-full sm:max-w-md">
+  <div className="min-h-screen bg-gradient-primary flex items-center justify-center px-4 py-8 w-full overflow-x-hidden">
+  <div className="w-full max-w-full sm:max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">

@@ -37,38 +37,40 @@ export const WeatherApp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-primary">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gradient-primary overflow-x-hidden">
+      <div className="container mx-auto px-4 py-8 max-w-full">
         {/* Header */}
-        <header className="flex items-center justify-between mb-12">
-          <div className="flex items-center gap-3">
-            <CloudRain className="h-12 w-12 text-neon-blue animate-pulse" />
-            <h1 className="text-5xl font-bold text-foreground">
-              Weather<span className="text-neon-cyan">Hub</span>
-            </h1>
-          </div>
+        <header className="w-full max-w-full overflow-x-hidden mb-12">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full">
+            <div className="flex items-center gap-3">
+              <CloudRain className="h-8 w-8 sm:h-12 sm:w-12 text-neon-blue animate-pulse" />
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground text-center sm:text-left">
+                Weather<span className="text-neon-cyan">Hub</span>
+              </h1>
+            </div>
 
-          {/* Auth Section */}
-          <div className="flex items-center gap-4">
-            {isAuthenticated ? (
-              <UserMenu />
-            ) : (
-              <div className="flex items-center gap-3">
-                <Link to="/signin">
-                  <Button 
-                    variant="ghost" 
-                    className="text-foreground hover:text-neon-blue border border-border/50 hover:border-neon-blue/50 transition-colors"
-                  >
-                    Sign In
-                  </Button>
-                </Link>
-                <Link to="/signup">
-                  <Button className="bg-neon-blue hover:bg-neon-blue/90 text-white neon-glow">
-                    Sign Up
-                  </Button>
-                </Link>
-              </div>
-            )}
+            {/* Auth Section */}
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              {isAuthenticated ? (
+                <UserMenu />
+              ) : (
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <Link to="/signin" className="flex-1 sm:flex-none">
+                    <Button 
+                      variant="ghost" 
+                      className="w-full sm:w-auto text-foreground hover:text-neon-blue border border-border/50 hover:border-neon-blue/50 transition-colors text-sm px-3 py-2"
+                    >
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link to="/signup" className="flex-1 sm:flex-none">
+                    <Button className="w-full sm:w-auto bg-neon-blue hover:bg-neon-blue/90 text-white neon-glow text-sm px-3 py-2">
+                      Sign Up
+                    </Button>
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 
