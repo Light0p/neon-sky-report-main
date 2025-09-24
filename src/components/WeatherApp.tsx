@@ -8,13 +8,26 @@ import { useAuth } from '@/contexts/AuthContext';
 import UserMenu from './UserMenu';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Cloud, CloudRain } from 'lucide-react';
+import { Cloud, CloudRain, User } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { AuthModal } from '@/components/AuthModal';
+import { useNavigate } from 'react-router-dom';
 
 export const WeatherApp = () => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { isAuthenticated } = useAuth();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const { isAuthenticated, user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const handleProfileClick = () => {
+    if (isAuthenticated) {
+      navigate('/profile');
+    } else {
+      setShowAuthModal(true);
+    }
+  };
 
   const handleSearch = async (city: string) => {
     setIsLoading(true);
@@ -39,39 +52,32 @@ export const WeatherApp = () => {
   return (
     <div className="min-h-screen bg-gradient-primary">
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <header className="flex items-center justify-between mb-12">
-          <div className="flex items-center gap-3">
+        {/* Updated Header */}
+        <header className="flex items-center justify-between mb-12 relative">
+          {/* Left spacer for centering */}
+          <div className="w-12"></div>
+
+          {/* Centered Title */}
+          <div className="flex items-center gap-3 absolute left-1/2 transform -translate-x-1/2">
             <CloudRain className="h-12 w-12 text-neon-blue animate-pulse" />
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
               Weather<span className="text-neon-cyan">Hub</span>
             </h1>
           </div>
 
-          {/* Auth Section */}
-          <div className="flex items-center gap-4">
-            {isAuthenticated ? (
-              <UserMenu />
-            ) : (
-              <div className="flex items-center gap-3">
-                <Link to="/signin">
-                  <Button
-                    variant="ghost"
-                    className="text-foreground hover:text-neon-blue border border-border/50 hover:border-neon-blue/50 transition-colors"
-                  >
-                    Sign In
-                  </Button>
-                </Link>
-                <Link to="/signup">
-                  <Button className="bg-neon-blue hover:bg-neon-blue/90 text-white neon-glow">
-                    Sign Up
-                  </Button>
-                </Link>
-              </div>
-            )}
-          </div>
+          {/* Profile Icon */}
+          <button
+            onClick={handleProfileClick}
+            className="relative z-10 transition-transform hover:scale-105"
+          >
+            <Avatar className="h-12 w-12 border-2 border-neon-blue neon-glow cursor-pointer">
+              <AvatarImage src="" />
+              <AvatarFallback className="bg-gradient-card text-neon-blue font-bold">
+                {isAuthenticated && user?.name ? user.name.charAt(0).toUpperCase() : <User className="h-6 w-6" />}
+              </AvatarFallback>
+            </Avatar>
+          </button>
         </header>
-
 
         {/* Welcome Message or Description */}
         <div className="text-center mb-8">
@@ -133,6 +139,12 @@ export const WeatherApp = () => {
           </div>
         )}
       </div>
+
+      {/* Auth Modal */}
+      <AuthModal
+        open={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+      />
     </div>
   );
 };
