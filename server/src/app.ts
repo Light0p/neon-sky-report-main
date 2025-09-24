@@ -11,10 +11,15 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// FIXED: Allow both localhost and your Vercel domain
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: [
+    'http://localhost:5173',
+    'https://neon-sky-report-main.vercel.app'
+  ],
   credentials: true
 }));
+
 app.use(express.json());
 
 // Auth routes
