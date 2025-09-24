@@ -1,20 +1,25 @@
 import { useState } from 'react';
-import { WeatherData, weatherApi } from '@/services/weatherApi';
+import { Link } from 'react-router-dom';
+import { WeatherData, fetchWeatherFromAPI } from '@/services/weatherApi';
 import { SearchBar } from './SearchBar';
 import { WeatherCard } from './WeatherCard';
 import { ForecastCard } from './ForecastCard';
+import { useAuth } from '@/contexts/AuthContext';
+import UserMenu from './UserMenu';
+import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Cloud, CloudRain } from 'lucide-react';
 
 export const WeatherApp = () => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { isAuthenticated } = useAuth();
   const { toast } = useToast();
 
   const handleSearch = async (city: string) => {
     setIsLoading(true);
     try {
-      const weatherData = await weatherApi.getCurrentWeather(city);
+      const weatherData = await fetchWeatherFromAPI(city);
       setWeather(weatherData);
       toast({
         title: "Weather Updated",
@@ -35,17 +40,44 @@ export const WeatherApp = () => {
     <div className="min-h-screen bg-gradient-primary">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <header className="text-center mb-12">
-          <div className="flex items-center justify-center gap-3 mb-4">
+        <header className="flex items-center justify-between mb-12">
+          <div className="flex items-center gap-3">
             <CloudRain className="h-12 w-12 text-neon-blue animate-pulse" />
             <h1 className="text-5xl font-bold text-foreground">
               Weather<span className="text-neon-cyan">Hub</span>
             </h1>
           </div>
+
+          {/* Auth Section */}
+          <div className="flex items-center gap-4">
+            {isAuthenticated ? (
+              <UserMenu />
+            ) : (
+              <div className="flex items-center gap-3">
+                <Link to="/signin">
+                  <Button 
+                    variant="ghost" 
+                    className="text-foreground hover:text-neon-blue border border-border/50 hover:border-neon-blue/50 transition-colors"
+                  >
+                    Sign In
+                  </Button>
+                </Link>
+                <Link to="/signup">
+                  <Button className="bg-neon-blue hover:bg-neon-blue/90 text-white neon-glow">
+                    Sign Up
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </div>
+        </header>
+
+        {/* Welcome Message or Description */}
+        <div className="text-center mb-8">
           <p className="text-xl text-muted-foreground max-w-md mx-auto">
             Get real-time weather updates for any city worldwide
           </p>
-        </header>
+        </div>
 
         {/* Search Bar */}
         <div className="mb-12">
@@ -65,7 +97,7 @@ export const WeatherApp = () => {
           <div className="max-w-4xl mx-auto space-y-8">
             {/* Current Weather */}
             <WeatherCard weather={weather} />
-            
+
             {/* 3-Day Forecast */}
             <div className="fade-in">
               <h3 className="text-2xl font-bold text-center mb-6 text-foreground">
@@ -94,7 +126,8 @@ export const WeatherApp = () => {
               Welcome to WeatherHub
             </h2>
             <p className="text-muted-foreground">
-              Search for any city to get started with real-time weather updates and forecasts.
+              Search for any city to get started with real-time weather updates and
+              forecasts.
             </p>
           </div>
         )}

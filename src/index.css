@@ -174,3 +174,23 @@
     animation: pulse-neon 2s ease-in-out infinite;
   }
 }
+
+.pulse-neon {
+  text-shadow: 
+    0 0 2px currentColor,
+    0 0 4px currentColor;
+  animation: pulse-glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+  from {
+    text-shadow: 
+      0 0 2px currentColor,
+      0 0 4px currentColor;
+  }
+  to {
+    text-shadow: 
+      0 0 1px currentColor,
+      0 0 2px currentColor;
+  }
+}

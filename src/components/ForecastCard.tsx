@@ -1,23 +1,9 @@
-import sunIcon from '@/assets/sun.png';
-import cloudIcon from '@/assets/cloud.png';
-import rainIcon from '@/assets/rain.png';
-import snowIcon from '@/assets/snow.png';
-import mistIcon from '@/assets/mist.png';
-
 interface ForecastCardProps {
   day: string;
   icon: string;
   maxTemp: number;
   minTemp: number;
 }
-
-const iconMap = {
-  sun: sunIcon,
-  cloud: cloudIcon,
-  rain: rainIcon,
-  snow: snowIcon,
-  mist: mistIcon,
-};
 
 export const ForecastCard = ({ day, icon, maxTemp, minTemp }: ForecastCardProps) => {
   return (
@@ -29,7 +15,7 @@ export const ForecastCard = ({ day, icon, maxTemp, minTemp }: ForecastCardProps)
       
       <div className="w-12 h-12 mx-auto mb-4">
         <img
-          src={iconMap[icon as keyof typeof iconMap]}
+          src={`https:${icon}`}
           alt={`${day} weather`}
           className="w-full h-full"
         />
